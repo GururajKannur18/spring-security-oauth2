@@ -1,0 +1,90 @@
+Spring OAuth2 Example:-
+***************************
+Please check the following from REST client:-
+------------------------------------------------
+Simple URL:
+***********
+http://localhost:8080/oauth-spring-inte-demo/oauth/token
+
+To Get Access token URL's
+**************************
+http://localhost:8080/oauth-spring-inte-demo/oauth/token?grant_type=password&username=test&password=password
+
+UserName/Password = test/password
+
+http://localhost:8080/oauth-spring-inte-demo/oauth/token?grant_type=client_credentials&username=test&password=password
+
+Output:-
+{
+    "access_token": "04cab239-9d11-44a0-af58-742c5f6046da",
+    "token_type": "bearer",
+    "expires_in": 3946,
+    "scope": "read trust write"
+}
+
+Access the Resources:-
+***********************
+http://localhost:8080/oauth-spring-inte-demo/rest/message/?access_token=04cab239-9d11-44a0-af58-742c5f6046da
+
+Hello Jersy Rest Spring
+
+
+
+
+========================================================================================
+**************
+CURL URL's:
+**************
+curl -X POST http://localhost:8080/oauth-spring-inte-demo/oauth/token -d "grant_type=password&username=test&password=password"
+
+curl -X POST http://localhost:8080/demo.rest.springsecurity.oauth2.0.authentication/oauth/token -H “Accept: application/json” -d "username=user1&password=user1&client_id=client1&client_secret=client1&grant_type=password"
+
+
+
+
+
+
+
+==========================================================================================
+use test;
+DROP TABLE IF EXISTS oauth_client_details;
+ 
+CREATE TABLE oauth_client_details (
+  client_id varchar(256) NOT NULL,
+  resource_ids varchar(256) DEFAULT NULL,
+  client_secret varchar(256) DEFAULT NULL,
+  scope varchar(256) DEFAULT NULL,
+  authorized_grant_types varchar(256) DEFAULT NULL,
+  web_server_redirect_uri varchar(256) DEFAULT NULL,
+  authorities varchar(256) DEFAULT NULL,
+  access_token_validity int(11) DEFAULT NULL,
+  refresh_token_validity int(11) DEFAULT NULL,
+  additional_information varchar(4096) DEFAULT NULL,
+  autoapprove varchar(4096) DEFAULT NULL,
+  PRIMARY KEY (client_id)
+);
+ 
+ 
+INSERT INTO oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity)
+VALUES ('test', 'rest_api', '$2a$11$89pRmThoMAW1.i324C2pnOJCTAGk5tU2IjDgqhxd15NN1uV3gs3Yq', 'trust,read,write', 'client_credentials,authorization_code,implicit,password,refresh_token', 'ROLE_USER', '4500', '45000');
+ 
+  DROP TABLE IF EXISTS oauth_access_token;
+ 
+  CREATE TABLE oauth_access_token (
+  token_id varchar(256) DEFAULT NULL,
+  token blob,
+  authentication_id varchar(256) DEFAULT NULL,
+  user_name varchar(256) DEFAULT NULL,
+  client_id varchar(256) DEFAULT NULL,
+  authentication blob,
+  refresh_token varchar(256) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ 
+ 
+DROP TABLE IF EXISTS oauth_refresh_token;
+ 
+CREATE TABLE oauth_refresh_token (
+  token_id varchar(256) DEFAULT NULL,
+  token blob,
+  authentication blob
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
